@@ -1,0 +1,45 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Validate JavaScript and manifest
+        run: |
+          node --check app.js
+          node --check auth.js
+          node --check site.js
+          node --check sw.js
+          node -e "JSON.parse(require('node:fs').readFileSync('manifest.webmanifest', 'utf8'))"
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare Pages artifact
+        run: |
+          mkdir _site
+          cp index.html login.html privacy.html terms.html styles.css app.js auth.js site.js sw.js manifest.webmanifest app-icon.svg app-icon-192.png app-icon-512.png apple-touch-icon.png motorbike.png restaurant.png school.png _site/
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

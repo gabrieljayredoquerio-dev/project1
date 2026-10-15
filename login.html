@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f2f2f7">
+<title>Log in · AllowanceSaver</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css?v=17">
+</head>
+<body>
+<button id="login-theme-toggle" class="login-theme-toggle" type="button" aria-pressed="false">
+  <span class="login-theme-icon" aria-hidden="true">☾</span>
+  <span id="login-theme-label">Dark mode</span>
+</button>
+<section id="auth" class="auth">
+  <div class="auth-card">
+    <h1>AllowanceSaver</h1>
+    <p class="muted">Plan your week. Keep what you don't spend.</p>
+    <aside class="local-storage-notice auth-storage-notice" aria-label="Local account information">
+      <strong>Stored on this device</strong>
+      <span>Accounts and budgets stay in this browser and do not sync. Passwords are not protected by server authentication. Use a unique password that you do not use elsewhere.</span>
+      <span id="connection-status" class="connection-status" role="status" aria-live="polite">Checking connection…</span>
+    </aside>
+    <div class="tabs">
+      <button id="tab-login" class="active" type="button">Log in</button>
+      <button id="tab-register" type="button">Create account</button>
+    </div>
+    <form id="auth-form" novalidate>
+      <label id="name-row" hidden>Full name <input id="a-name" type="text" autocomplete="name"></label>
+      <label>Email <input id="a-email" type="email" autocomplete="email"></label>
+      <label>Password <input id="a-pass" type="password" autocomplete="current-password"></label>
+      <p id="auth-msg" class="msg" role="alert" aria-live="polite"></p>
+      <button id="auth-submit" class="primary" type="submit">Log in</button>
+    </form>
+    <p class="legal-links"><a href="privacy.html">Privacy notice</a> · <a href="terms.html">Terms of use</a></p>
+  </div>
+</section>
+<script src="auth.js?v=3"></script>
+<script src="site.js"></script>
+</body>
+</html>

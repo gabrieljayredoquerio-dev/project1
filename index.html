@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f2f2f7">
+<title>AllowanceSaver</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css?v=17">
+</head>
+<body>
+
+<!-- USER DASHBOARD -->
+<section id="user-view" class="layout" hidden>
+  <aside class="side left-sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark">A</span>
+      <span>AllowanceSaver</span>
+    </div>
+    <p class="sidebar-label">WORKSPACE</p>
+    <nav class="side-nav" aria-label="Dashboard sections">
+      <button class="nav-tab active" type="button" data-view="overview" aria-current="page">
+        <span aria-hidden="true">⌂</span> Overview
+      </button>
+      <button class="nav-tab" type="button" data-view="insights">
+        <span aria-hidden="true">◷</span> Insights
+      </button>
+      <button class="nav-tab" type="button" data-view="history">
+        <span aria-hidden="true">▤</span> Week history
+      </button>
+    </nav>
+    <div class="sidebar-actions">
+      <button id="open-expense" class="primary" type="button">＋ Log expense</button>
+      <button id="open-allowance" class="ghost sidebar-week-button" type="button">＋ Add allowance</button>
+      <button id="open-week" class="ghost sidebar-week-button" type="button">Start a new week</button>
+    </div>
+    <div class="sidebar-footer">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        <span class="theme-label">Dark mode</span>
+      </button>
+      <button class="ghost logout" type="button">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <aside class="local-storage-notice" aria-label="Local account information">
+      <strong>Stored on this device</strong>
+      <span>Your account and budget are stored only in this browser and do not sync. Passwords are not protected by server authentication. Use a unique password.</span>
+      <span id="connection-status" class="connection-status" role="status" aria-live="polite">Checking connection…</span>
+      <a href="privacy.html">Privacy</a>
+    </aside>
+    <header class="top app-top">
+      <div>
+        <p id="view-eyebrow" class="eyebrow">BUDGET OVERVIEW</p>
+        <h2 id="welcome"></h2>
+      </div>
+      <button id="mobile-log-expense" class="primary mobile-log-expense" type="button">＋ Log expense</button>
+    </header>
+
+    <p id="side-msg" class="msg flow-message" role="status" aria-live="polite"></p>
+
+    <section id="dashboard-hero" class="hero-panel">
+      <div class="hero-copy">
+        <p id="hero-period" class="eyebrow accent">This week</p>
+        <h3 id="hero-title">Keep every peso working for you.</h3>
+        <div id="hero-metrics" class="hero-metrics">
+          <div class="mini-stat">
+            <span>Weekly allowance</span>
+            <strong id="hero-allow">₱0.00</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Amount left</span>
+            <strong id="hero-left">₱0.00</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Spending trend</span>
+            <strong id="hero-trend">0% used</strong>
+          </div>
+        </div>
+      </div>
+      <div id="hero-art" class="hero-art" aria-hidden="true">
+        <div class="art-orb orb-one"></div>
+        <div class="art-orb orb-two"></div>
+        <div class="money-card">
+          <span>Saved</span>
+          <strong id="hero-saved">₱0.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="week-empty" class="week-empty panel" hidden>
+      <span class="empty-icon" aria-hidden="true">↗</span>
+      <div>
+        <p class="eyebrow accent">First step</p>
+        <h3>Set your weekly allowance</h3>
+        <p>Once your plan is set, you can log expenses and see your spending at a glance.</p>
+      </div>
+      <button id="setup-week" class="primary" type="button">Set allowance</button>
+    </section>
+
+    <section id="history-panel" class="panel history-panel" hidden>
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Your records</p>
+          <h3>Weekly history</h3>
+        </div>
+        <button id="show-current-week" class="ghost" type="button" hidden>Back to this week</button>
+      </div>
+      <div class="history-controls">
+        <label for="history-select">Past weeks</label>
+        <select id="history-select">
+          <option value="">Choose a week to review</option>
+        </select>
+        <button id="view-history" class="ghost" type="button">View week</button>
+        <button id="restore-history" class="ghost" type="button">Restore as current week</button>
+        <button id="export-history" class="ghost" type="button">Export selected CSV</button>
+      </div>
+    </section>
+    <section id="history-empty" class="panel history-empty" hidden>
+      <h3>No saved weeks yet</h3>
+      <p>Expired weeks are archived automatically. You can export saved records or restore a week as your current budget.</p>
+    </section>
+
+    <div id="week-content" hidden>
+      <div id="week-summary" class="cards">
+        <div class="card"><span>Total allowance this week</span><strong id="c-allow">₱0.00</strong></div>
+        <div class="card"><span>Total spent</span><strong id="c-spent">₱0.00</strong></div>
+        <div class="card"><span>Saved / remaining</span><strong id="c-left">₱0.00</strong></div>
+      </div>
+
+      <section id="insights-panel" class="panel insights-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">At a glance</p>
+            <h3>Weekly insights</h3>
+          </div>
+          <span id="insight-caption" class="insight-caption">Based on this week's expenses</span>
+        </div>
+        <div class="insight-grid">
+          <article class="insight-card">
+            <span>Highest-spend day</span>
+            <strong id="insight-day">No spending yet</strong>
+          </article>
+          <article class="insight-card">
+            <span>Top category</span>
+            <strong id="insight-category">No spending yet</strong>
+          </article>
+          <article class="insight-card">
+            <span>Food spending</span>
+            <strong id="insight-food">₱0.00</strong>
+          </article>
+        </div>
+        <div id="category-totals" class="category-totals" aria-label="Spending totals by category"></div>
+        <form id="goal-form" class="goal-form" novalidate>
+          <label for="goal-amount">Weekly savings goal (₱)</label>
+          <div class="goal-controls">
+            <input id="goal-amount" type="number" min="0" step="0.01" placeholder="e.g. 200">
+            <button id="save-goal" class="ghost" type="submit">Set goal</button>
+          </div>
+          <div class="goal-progress-track" aria-label="Savings goal progress">
+            <div id="goal-progress" class="goal-progress"></div>
+          </div>
+          <p id="goal-status" class="goal-status"></p>
+        </form>
+      </section>
+
+      <div id="spending-panel" class="panel chart-panel">
+        <div class="panel-header">
+          <h3>Spending by day</h3>
+          <span id="chart-total">₱0.00</span>
+        </div>
+        <div id="spending-chart" class="spending-chart" aria-label="Daily spending chart"></div>
+      </div>
+
+      <div id="breakdown-panel" class="panel">
+        <div class="breakdown-header">
+          <div>
+            <h3>Day-by-day breakdown</h3>
+            <p id="filter-note" class="filter-note">Daily totals include all expenses.</p>
+          </div>
+          <button id="export-week" class="ghost" type="button">Export CSV</button>
+        </div>
+        <div class="expense-filters">
+          <label for="expense-search">Search expenses
+            <input id="expense-search" type="search" placeholder="Search item or category">
+          </label>
+          <label for="filter-day">Day
+            <select id="filter-day"><option value="">All days</option></select>
+          </label>
+          <label for="filter-category">Category
+            <select id="filter-category">
+              <option value="">All categories</option>
+              <option value="food">Food</option>
+              <option value="transport">Transport</option>
+              <option value="school">School</option>
+              <option value="personal">Personal</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <button id="clear-filters" class="ghost" type="button">Clear filters</button>
+        </div>
+        <div class="table-wrap breakdown-wrap">
+          <table class="breakdown-table">
+            <thead><tr><th>Day</th><th>Spent</th><th>Remaining balance</th><th>Items</th></tr></thead>
+            <tbody id="day-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <section class="local-data-tools panel" aria-labelledby="local-data-title">
+      <div>
+        <p class="eyebrow">Your browser storage</p>
+        <h3 id="local-data-title">Keep a copy of your data</h3>
+        <p>Download a backup before changing browsers or clearing site data. Backups contain personal budget details; store them somewhere private.</p>
+      </div>
+      <div class="local-data-actions">
+        <button id="export-backup" class="ghost" type="button">Download backup</button>
+        <input id="import-backup" class="backup-file-input" type="file" accept="application/json,.json">
+        <label class="backup-import-label" for="import-backup">Restore backup</label>
+        <button id="delete-local-account" class="danger-button" type="button">Delete local account</button>
+      </div>
+    </section>
+    <footer class="site-footer">
+      <span>AllowanceSaver · Stored in this browser</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></span>
+    </footer>
+  </main>
+
+</section>
+
+<dialog id="expense-dialog" class="action-dialog">
+  <form id="expense-form" novalidate>
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow accent">Expense tracker</p>
+        <h2 id="expense-dialog-title">Log an expense</h2>
+      </div>
+      <button class="dialog-close" type="button" data-close-dialog="expense-dialog" aria-label="Close">×</button>
+    </div>
+    <label>Day <select id="s-day"></select></label>
+    <label>Item <input id="s-item" type="text" placeholder="e.g. Lunch"></label>
+    <label>Category
+      <select id="s-category">
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="school">School</option>
+        <option value="personal">Personal</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+    <label>Amount spent (₱) <input id="s-amt" type="number" min="0.01" step="0.01"></label>
+    <div class="expense-form-actions">
+      <button id="log-expense" class="primary" type="submit">Log expense</button>
+      <button id="cancel-edit" class="ghost" type="button" hidden>Cancel edit</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="allowance-dialog" class="action-dialog">
+  <form id="allowance-form" novalidate>
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow accent">Weekly budget</p>
+        <h2>Add to this week's allowance</h2>
+      </div>
+      <button class="dialog-close" type="button" data-close-dialog="allowance-dialog" aria-label="Close">×</button>
+    </div>
+    <p class="dialog-description">This amount will be added to your current allowance. Your expenses and saved weeks will stay unchanged.</p>
+    <label>Additional allowance (₱)
+      <input id="additional-allowance" type="number" min="0.01" max="1000000000" step="0.01" placeholder="e.g. 250">
+    </label>
+    <button class="primary" type="submit">Add allowance</button>
+  </form>
+</dialog>
+
+<dialog id="week-dialog" class="action-dialog">
+  <form id="week-form" novalidate>
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow accent">Weekly budget</p>
+        <h2 id="week-dialog-title">Start a new week</h2>
+      </div>
+      <button class="dialog-close" type="button" data-close-dialog="week-dialog" aria-label="Close">×</button>
+    </div>
+    <p class="dialog-description">Your current week will be saved to history before a fresh log is created.</p>
+    <label>Week starts on
+      <input id="period-start" type="date" required>
+    </label>
+    <label>Allowance for the week (₱)
+      <input id="s-allow" type="number" min="0.01" step="0.01" placeholder="e.g. 700">
+    </label>
+    <button id="start-week" class="primary" type="submit">Start my week</button>
+  </form>
+</dialog>
+
+<!-- ADMIN DASHBOARD -->
+<section id="admin-view" class="admin" hidden>
+  <header class="top">
+    <h2 id="admin-welcome"></h2>
+    <button class="ghost logout" type="button">Log out</button>
+  </header>
+  <aside class="local-storage-notice" aria-label="Local account information">
+    <strong>Stored on this device</strong>
+    <span>Accounts and passwords are stored in this browser only. Roles are not secure access controls.</span>
+    <span id="admin-connection-status" class="connection-status" role="status" aria-live="polite">Checking connection…</span>
+    <a href="privacy.html">Privacy</a>
+  </aside>
+  <p id="admin-side-msg" class="msg" role="status" aria-live="polite"></p>
+  <div class="cards">
+    <div class="card"><span>Registered users</span><strong id="m-users">0</strong></div>
+    <div class="card"><span>Total savings tracked</span><strong id="m-saved">₱0.00</strong></div>
+    <div class="card"><span>Active weekly setups</span><strong id="m-active">0</strong></div>
+  </div>
+  <div class="panel">
+    <h3>Users</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Allowance</th><th>Spent</th><th>Saved</th></tr></thead>
+        <tbody id="user-rows"></tbody>
+      </table>
+    </div>
+  </div>
+  <section class="local-data-tools panel" aria-labelledby="admin-local-data-title">
+    <div>
+      <p class="eyebrow">Your browser storage</p>
+      <h3 id="admin-local-data-title">Keep a copy of your data</h3>
+      <p>Download a backup before clearing this browser's site data. Backups contain personal details; store them somewhere private.</p>
+    </div>
+    <div class="local-data-actions">
+      <button id="admin-export-backup" class="ghost" type="button">Download backup</button>
+      <input id="admin-import-backup" class="backup-file-input" type="file" accept="application/json,.json">
+      <label class="backup-import-label" for="admin-import-backup">Restore backup</label>
+      <button id="admin-delete-local-account" class="danger-button" type="button">Delete local account</button>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <span>AllowanceSaver · Stored in this browser</span>
+    <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></span>
+  </footer>
+</section>
+
+<script src="auth.js?v=3"></script>
+<script src="app.js?v=14"></script>
+<script src="site.js"></script>
+</body>
+</html>
