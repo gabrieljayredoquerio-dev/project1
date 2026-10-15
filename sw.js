@@ -1,11 +1,11 @@
-const CACHE_NAME = "allowancesaver-static-v4";
+const CACHE_NAME = "allowancesaver-static-v5";
 const APP_FILES = [
   "./",
   "./index.html",
   "./login.html",
   "./privacy.html",
   "./terms.html",
-  "./styles.css?v=18",
+  "./styles.css?v=19",
   "./auth.js?v=3",
   "./app.js?v=14",
   "./site.js",
