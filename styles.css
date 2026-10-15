@@ -2518,20 +2518,31 @@ body[data-theme="dark"] .panel { background: var(--surface); box-shadow: none; }
 .auth-card h1 { color: var(--ink); }
 
 @media (max-width: 860px) {
-  .layout { gap: 20px; padding: 16px; }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
   .left-sidebar {
     position: relative;
     top: auto;
     height: auto;
     min-height: 0;
+    width: 100%;
+    min-width: 0;
     border: 1px solid var(--line);
     border-radius: 18px;
     background: var(--surface);
   }
+  .main { width: 100%; }
 }
 
 @media (max-width: 560px) {
-  .layout { gap: 16px; padding: 10px 10px 18px; }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 10px 10px 18px;
+  }
   .left-sidebar { padding: 14px; border-radius: 16px; }
   .side-nav { gap: 4px; padding: 4px; border-radius: 12px; background: var(--bg); }
   .nav-tab { min-height: 40px; gap: 4px; border-radius: 9px; font-size: 0.74rem; }
