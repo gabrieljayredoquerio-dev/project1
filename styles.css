@@ -3635,3 +3635,141 @@ body[data-theme="dark"] .panel { background: var(--surface); box-shadow: none; }
   .hero-panel { padding: 22px 18px; border-radius: 20px; }
   .panel { padding: 18px 16px; border-radius: 16px; }
 }
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .left-sidebar {
+    position: relative;
+    top: auto;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--surface);
+  }
+
+  .main {
+    width: 100%;
+    min-width: 0;
+    padding: 4px 0 32px;
+  }
+}
+
+@media (max-width: 560px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding:
+      max(10px, env(safe-area-inset-top))
+      10px
+      max(18px, env(safe-area-inset-bottom));
+  }
+
+  .left-sidebar,
+  .main,
+  .panel,
+  .hero-panel {
+    min-width: 0;
+  }
+
+  .side-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nav-tab {
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+    padding: 7px 3px;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .hero-panel,
+  .hero-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mini-stat:last-child {
+    grid-column: auto;
+  }
+
+  .hero-art {
+    min-height: 112px;
+  }
+
+  .money-card {
+    width: min(100%, 220px);
+  }
+
+  .history-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .history-controls label {
+    grid-column: auto;
+  }
+
+  .history-controls button,
+  .history-controls select {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .action-dialog {
+    width: calc(100% - 20px);
+    max-width: 460px;
+    max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .action-dialog input,
+  .action-dialog select,
+  .expense-filters input,
+  .expense-filters select,
+  .expense-filters button,
+  .goal-controls button {
+    min-height: 44px;
+  }
+
+  .auth {
+    min-height: 100svh;
+  }
+}
+
+@media (max-width: 380px) {
+  .layout {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .left-sidebar {
+    padding: 12px;
+  }
+
+  .app-top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .app-top .mobile-log-expense {
+    width: 100%;
+  }
+
+  .insight-grid,
+  .expense-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .expense-filters label {
+    grid-column: auto;
+  }
+}
