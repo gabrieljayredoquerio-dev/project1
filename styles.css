@@ -2553,6 +2553,155 @@ body[data-theme="dark"] .panel { background: var(--surface); box-shadow: none; }
   .panel { padding: 18px 16px; border-radius: 16px; }
 }
 
+@media (max-width: 560px) {
+  .layout {
+    min-width: 320px;
+    padding:
+      max(10px, env(safe-area-inset-top))
+      10px
+      max(18px, env(safe-area-inset-bottom));
+  }
+
+  .main,
+  .left-sidebar,
+  .panel,
+  .hero-panel {
+    min-width: 0;
+  }
+
+  .sidebar-brand {
+    font-size: 0.94rem;
+  }
+
+  .side-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .nav-tab {
+    min-width: 0;
+    flex-direction: column;
+    gap: 3px;
+    padding: 7px 3px;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  .sidebar-week-button {
+    min-width: 0;
+    line-height: 1.25;
+  }
+
+  .hero-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mini-stat:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .hero-art {
+    min-height: 112px;
+  }
+
+  .money-card {
+    width: min(100%, 220px);
+    padding: 13px 16px;
+  }
+
+  .panel-header,
+  .breakdown-header {
+    flex-wrap: wrap;
+  }
+
+  .history-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .history-controls label {
+    grid-column: auto;
+  }
+
+  .history-controls button,
+  .history-controls select {
+    width: 100%;
+  }
+
+  .action-dialog {
+    width: calc(100% - 20px);
+    max-width: 460px;
+    max-height: calc(100dvh - 20px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .action-dialog input,
+  .action-dialog select,
+  .expense-filters input,
+  .expense-filters select,
+  .expense-filters button,
+  .history-controls button,
+  .history-controls select,
+  .goal-controls button {
+    min-height: 44px;
+  }
+
+  .auth {
+    min-height: 100svh;
+  }
+}
+
+@media (max-width: 380px) {
+  .layout {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .left-sidebar {
+    padding: 12px;
+  }
+
+  .app-top {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .app-top .mobile-log-expense {
+    width: 100%;
+  }
+
+  .hero-metrics,
+  .insight-grid,
+  .expense-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mini-stat:last-child,
+  .expense-filters label:first-child {
+    grid-column: auto;
+  }
+
+  .category-totals {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .breakdown-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .breakdown-header button {
+    width: 100%;
+  }
+
+  .expense-filters label {
+    grid-column: auto;
+  }
+}
+
 .local-storage-notice {
   display: flex;
   align-items: center;
